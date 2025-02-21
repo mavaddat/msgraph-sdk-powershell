@@ -1,6 +1,8 @@
 ### Example 1: Configure inbound trust settings
 
-```powershellImport-Module Microsoft.Graph.Identity.SignIns
+```powershell
+
+Import-Module Microsoft.Graph.Identity.SignIns
 
 $params = @{
 	inboundTrust = @{
@@ -11,13 +13,15 @@ $params = @{
 }
 
 Update-MgPolicyCrossTenantAccessPolicyPartner -CrossTenantAccessPolicyConfigurationPartnerTenantId $crossTenantAccessPolicyConfigurationPartnerTenantId -BodyParameter $params
+
 ```
-This example shows how to use the Update-MgPolicyCrossTenantAccessPolicyPartner Cmdlet.
-To learn about permissions for this resource, see the [permissions reference](/graph/permissions-reference).
+This example will configure inbound trust settings
 
 ### Example 2: Configure automaticUserConsent settings
 
-```powershellImport-Module Microsoft.Graph.Identity.SignIns
+```powershell
+
+Import-Module Microsoft.Graph.Identity.SignIns
 
 $params = @{
 	automaticUserConsentSettings = @{
@@ -27,7 +31,7 @@ $params = @{
 }
 
 Update-MgPolicyCrossTenantAccessPolicyPartner -CrossTenantAccessPolicyConfigurationPartnerTenantId $crossTenantAccessPolicyConfigurationPartnerTenantId -BodyParameter $params
+
 ```
-This example shows how to use the Update-MgPolicyCrossTenantAccessPolicyPartner Cmdlet.
-To learn about permissions for this resource, see the [permissions reference](/graph/permissions-reference).
+This example will configure automaticuserconsent settings
 

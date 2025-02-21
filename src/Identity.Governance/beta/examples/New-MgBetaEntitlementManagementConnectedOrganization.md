@@ -1,6 +1,8 @@
-### Example 1: Code snippet
+### Example 1: Create a connected organization
 
-```powershellImport-Module Microsoft.Graph.Beta.Identity.Governance
+```powershell
+
+Import-Module Microsoft.Graph.Beta.Identity.Governance
 
 $params = @{
 	displayName = "Connected organization name"
@@ -16,7 +18,31 @@ $params = @{
 }
 
 New-MgBetaEntitlementManagementConnectedOrganization -BodyParameter $params
+
 ```
-This example shows how to use the New-MgBetaEntitlementManagementConnectedOrganization Cmdlet.
-To learn about permissions for this resource, see the [permissions reference](/graph/permissions-reference).
+This example will create a connected organization
+
+### Example 2: Create a connected organization with an identitySource based on a tenant ID
+
+```powershell
+
+Import-Module Microsoft.Graph.Beta.Identity.Governance
+
+$params = @{
+	displayName = "Connected organization name"
+	description = "Connected organization description"
+	identitySources = @(
+		@{
+			"@odata.type" = "#microsoft.graph.azureActiveDirectoryTenant"
+			displayName = "Contoso"
+			tenantId = "aaaabbbb-0000-cccc-1111-dddd2222eeee"
+		}
+	)
+	state = "proposed"
+}
+
+New-MgBetaEntitlementManagementConnectedOrganization -BodyParameter $params
+
+```
+This example will create a connected organization with an identitysource based on a tenant id
 

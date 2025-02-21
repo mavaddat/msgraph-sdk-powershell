@@ -1,18 +1,13 @@
-### Example 1: {{ Add title here }}
+### Example 1: Update the photo of a team
+
 ```powershell
-PS C:\> {{ Add code here }}
 
-{{ Add output here }}
+Import-Module Microsoft.Graph.Teams
+
+$params = Binary data for the image
+
+Set-MgTeamPhotoContent -TeamId $teamId -BodyParameter $params
+
 ```
-
-{{ Add description here }}
-
-### Example 2: {{ Add title here }}
-```powershell
-PS C:\> {{ Add code here }}
-
-{{ Add output here }}
-```
-
-{{ Add description here }}
+This example will update the photo of a team
 

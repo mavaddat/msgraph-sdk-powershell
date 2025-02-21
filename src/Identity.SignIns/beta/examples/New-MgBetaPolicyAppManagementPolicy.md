@@ -1,18 +1,57 @@
-### Example 1: {{ Add title here }}
+### Example 1: Code snippet
+
 ```powershell
-PS C:\> {{ Add code here }}
 
-{{ Add output here }}
+Import-Module Microsoft.Graph.Beta.Identity.SignIns
+
+$params = @{
+	displayName = "Credential management policy"
+	description = "Cred policy sample"
+	isEnabled = $true
+	restrictions = @{
+		passwordCredentials = @(
+			@{
+				restrictionType = "passwordAddition"
+				state = "enabled"
+				maxLifetime = $null
+				restrictForAppsCreatedAfterDateTime = [System.DateTime]::Parse("2019-10-19T10:37:00Z")
+			}
+			@{
+				restrictionType = "passwordLifetime"
+				state = "enabled"
+				maxLifetime = "P90D"
+				restrictForAppsCreatedAfterDateTime = [System.DateTime]::Parse("2014-10-19T10:37:00Z")
+			}
+			@{
+				restrictionType = "symmetricKeyAddition"
+				state = "enabled"
+				maxLifetime = $null
+				restrictForAppsCreatedAfterDateTime = [System.DateTime]::Parse("2019-10-19T10:37:00Z")
+			}
+			@{
+				restrictionType = "symmetricKeyLifetime"
+				state = "enabled"
+				maxLifetime = "P90D"
+				restrictForAppsCreatedAfterDateTime = [System.DateTime]::Parse("2014-10-19T10:37:00Z")
+			}
+		)
+		keyCredentials = @(
+		)
+		applicationRestrictions = @{
+			identifierUris = @{
+				nonDefaultUriAddition = @{
+					state = "disabled"
+					restrictForAppsCreatedAfterDateTime = $null
+					excludeAppsReceivingV2Tokens = $true
+					excludeSaml = $true
+				}
+			}
+		}
+	}
+}
+
+New-MgBetaPolicyAppManagementPolicy -BodyParameter $params
+
 ```
-
-{{ Add description here }}
-
-### Example 2: {{ Add title here }}
-```powershell
-PS C:\> {{ Add code here }}
-
-{{ Add output here }}
-```
-
-{{ Add description here }}
+This example shows how to use the New-MgBetaPolicyAppManagementPolicy Cmdlet.
 

@@ -1,4 +1,4 @@
-### Example 1: Code snippet
+### Example 1: Invite one participant to an existing call
 
 ```powershell
 
@@ -25,9 +25,50 @@ $params = @{
 Invoke-MgBetaInviteCommunicationCallParticipant -CallId $callId -BodyParameter $params
 
 ```
-This example shows how to use the Invoke-MgBetaInviteCommunicationCallParticipant Cmdlet.
+This example will invite one participant to an existing call
 
-### Example 2: Code snippet
+### Example 2: Invite multiple participants to an existing group call
+
+```powershell
+
+Import-Module Microsoft.Graph.Beta.CloudCommunications
+
+$params = @{
+	participants = @(
+		@{
+			"@odata.type" = "#microsoft.graph.invitationParticipantInfo"
+			replacesCallId = "a7ebfb2d-871e-419c-87af-27290b22e8db"
+			identity = @{
+				"@odata.type" = "#microsoft.graph.identitySet"
+				user = @{
+					"@odata.type" = "#microsoft.graph.identity"
+					id = "7e1b4346-85a6-4bdd-abe3-d11c5d420efe"
+					identityProvider = "AAD"
+				}
+			}
+		}
+		@{
+			"@odata.type" = "#microsoft.graph.invitationParticipantInfo"
+			replacesCallId = "a7ebfb2d-871e-419c-87af-27290b22e8db"
+			identity = @{
+				"@odata.type" = "#microsoft.graph.identitySet"
+				user = @{
+					"@odata.type" = "#microsoft.graph.identity"
+					id = "1e126418-44a0-4a94-a6f8-0efe1ad71acb"
+					identityProvider = "AAD"
+				}
+			}
+		}
+	)
+	clientContext = "f2fa86af-3c51-4bc2-8fc0-475452d9764f"
+}
+
+Invoke-MgBetaInviteCommunicationCallParticipant -CallId $callId -BodyParameter $params
+
+```
+This example will invite multiple participants to an existing group call
+
+### Example 3: Invite participants to an existing group call, replacing an existing Peer-to-Peer call
 
 ```powershell
 
@@ -54,9 +95,9 @@ $params = @{
 Invoke-MgBetaInviteCommunicationCallParticipant -CallId $callId -BodyParameter $params
 
 ```
-This example shows how to use the Invoke-MgBetaInviteCommunicationCallParticipant Cmdlet.
+This example will invite participants to an existing group call, replacing an existing peer-to-peer call
 
-### Example 3: Code snippet
+### Example 4: Invite one PSTN participant to an existing call
 
 ```powershell
 
@@ -81,9 +122,9 @@ $params = @{
 Invoke-MgBetaInviteCommunicationCallParticipant -CallId $callId -BodyParameter $params
 
 ```
-This example shows how to use the Invoke-MgBetaInviteCommunicationCallParticipant Cmdlet.
+This example will invite one pstn participant to an existing call
 
-### Example 4: Code snippet
+### Example 5: Move one participant from one meeting to another
 
 ```powershell
 
@@ -111,5 +152,5 @@ $params = @{
 Invoke-MgBetaInviteCommunicationCallParticipant -CallId $callId -BodyParameter $params
 
 ```
-This example shows how to use the Invoke-MgBetaInviteCommunicationCallParticipant Cmdlet.
+This example will move one participant from one meeting to another
 

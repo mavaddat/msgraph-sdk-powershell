@@ -453,6 +453,10 @@ namespace Microsoft.Graph.PowerShell.Authentication.Cmdlets
                                 throw new ArgumentOutOfRangeException(nameof(OutputType));
                         }
                         break;
+                    case RestReturnType.PlainText:
+                        responseString = await response.Content.ReadAsStringAsync();
+                        WriteObject(responseString);
+                        break;
                     case RestReturnType.OctetStream:
                         if (OutputType == OutputType.HttpResponseMessage)
                             WriteObject(response);
@@ -1000,7 +1004,6 @@ namespace Microsoft.Graph.PowerShell.Authentication.Cmdlets
         private void ResetGraphSessionEnvironment()
         {
             _originalEnvironment = GraphSession.Instance.Environment;
-            GraphSession.Instance.Environment = _originalEnvironment;
         }
 
         #region CmdLet LifeCycle

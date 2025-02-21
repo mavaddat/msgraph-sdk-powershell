@@ -7,7 +7,8 @@ Import-Module Microsoft.Graph.Beta.Teams
 $params = @{
 	"template@odata.bind" = "https://graph.microsoft.com/beta/teamsTemplates('standard')"
 	displayName = "My Sample Team"
-	description = "My Sample Team’s Description"
+	description = "My Sample Team's Description"
+	firstChannelName = "My First Channel of the sample team"
 }
 
 New-MgBetaTeam -BodyParameter $params
@@ -25,15 +26,16 @@ $params = @{
 	"template@odata.bind" = "https://graph.microsoft.com/beta/teamsTemplates('standard')"
 	displayName = "My Sample Team"
 	description = "My Sample Team’s Description"
+	firstChannelName = "My First Channel of the sample team"
 	members = @(
 		@{
 			"@odata.type" = "#microsoft.graph.aadUserConversationMember"
 			roles = @(
-				"owner"
-			)
-			"user@odata.bind" = "https://graph.microsoft.com/beta/users('0040b377-61d8-43db-94f5-81374122dc7e')"
-		}
-	)
+			"owner"
+		)
+		"user@odata.bind" = "https://graph.microsoft.com/beta/users('0040b377-61d8-43db-94f5-81374122dc7e')"
+	}
+)
 }
 
 New-MgBetaTeam -BodyParameter $params
@@ -52,6 +54,7 @@ $params = @{
 	visibility = "Private"
 	displayName = "Sample Engineering Team"
 	description = "This is a sample engineering team, used to showcase the range of properties supported by this API"
+	firstChannelName = "My First Channel of the team"
 	channels = @(
 		@{
 			displayName = "Announcements 📢"
@@ -255,6 +258,25 @@ This example shows how to use the New-MgBetaTeam Cmdlet.
 Import-Module Microsoft.Graph.Beta.Teams
 
 $params = @{
+	"@microsoft.graph.teamCreationMode" = "migration"
+	"template@odata.bind" = "https://graph.microsoft.com/beta/teamsTemplates('standard')"
+	displayName = "My Sample Team"
+	description = "My Sample Team’s Description"
+	createdDateTime = [System.DateTime]::Parse("2020-03-14T11:22:17.067Z")
+}
+
+New-MgBetaTeam -BodyParameter $params
+
+```
+This example shows how to use the New-MgBetaTeam Cmdlet.
+
+### Example 9: Code snippet
+
+```powershell
+
+Import-Module Microsoft.Graph.Beta.Teams
+
+$params = @{
 	"template@odata.bind" = "https://graph.microsoft.com/beta/teamsTemplates('standard')"
 	displayName = "My Sample Team"
 	description = "My Sample Team’s Description"
@@ -262,11 +284,11 @@ $params = @{
 		@{
 			"@odata.type" = "#microsoft.graph.aadUserConversationMember"
 			roles = @(
-				"owner"
-			)
-			"user@odata.bind" = "https://graph.microsoft.com/beta/users('jacob@contoso.com')"
-		}
-	)
+			"owner"
+		)
+		"user@odata.bind" = "https://graph.microsoft.com/beta/users('jacob@contoso.com')"
+	}
+)
 }
 
 New-MgBetaTeam -BodyParameter $params

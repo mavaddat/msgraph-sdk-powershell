@@ -389,6 +389,16 @@ paths:
             type: array
             items:
               type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
       responses:
         2XX:
           $ref: '#/components/responses/microsoft.graph.personCollectionResponse'
@@ -425,6 +435,16 @@ paths:
         - name: $select
           in: query
           description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
           style: form
           explode: false
           schema:
@@ -953,7 +973,11 @@ paths:
     patch:
       tags:
         - users.profile
-      summary: Update the navigation property addresses in users
+      summary: Update itemAddress
+      description: Update the properties of an itemAddress object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/itemaddress-update?view=graph-rest-beta
       operationId: user.profile_UpdateAddress
       parameters:
         - name: user-id
@@ -992,7 +1016,11 @@ paths:
     delete:
       tags:
         - users.profile
-      summary: Delete navigation property addresses for users
+      summary: Delete itemAddress
+      description: Deletes an itemAddress object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/itemaddress-delete?view=graph-rest-beta
       operationId: user.profile_DeleteAddress
       parameters:
         - name: user-id
@@ -1433,7 +1461,11 @@ paths:
     patch:
       tags:
         - users.profile
-      summary: Update the navigation property awards in users
+      summary: Update personAward
+      description: Update the properties of a personAward object from a user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/personaward-update?view=graph-rest-beta
       operationId: user.profile_UpdateAward
       parameters:
         - name: user-id
@@ -1472,7 +1504,11 @@ paths:
     delete:
       tags:
         - users.profile
-      summary: Delete navigation property awards for users
+      summary: Delete personAward
+      description: Deletes a personAward object from a user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/personaward-delete?view=graph-rest-beta
       operationId: user.profile_DeleteAward
       parameters:
         - name: user-id
@@ -1673,7 +1709,11 @@ paths:
     patch:
       tags:
         - users.profile
-      summary: Update the navigation property certifications in users
+      summary: Update personCertification
+      description: Update the properties of a personCertification object from a user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/personcertification-update?view=graph-rest-beta
       operationId: user.profile_UpdateCertification
       parameters:
         - name: user-id
@@ -1712,7 +1752,11 @@ paths:
     delete:
       tags:
         - users.profile
-      summary: Delete navigation property certifications for users
+      summary: Delete personCertification
+      description: Deletes a personCertification object from a user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/personcertification-delete?view=graph-rest-beta
       operationId: user.profile_DeleteCertification
       parameters:
         - name: user-id
@@ -2009,8 +2053,8 @@ paths:
     get:
       tags:
         - users.profile
-      summary: Get emails from users
-      description: Represents detailed information about email addresses associated with the user.
+      summary: Get itemEmail
+      description: Retrieve the properties and relationships of an itemEmail object in a user's profile.
       operationId: user.profile_ListEmail
       parameters:
         - name: user-id
@@ -2100,8 +2144,11 @@ paths:
     get:
       tags:
         - users.profile
-      summary: Get emails from users
-      description: Represents detailed information about email addresses associated with the user.
+      summary: Get itemEmail
+      description: Retrieve the properties and relationships of an itemEmail object in a user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/itememail-get?view=graph-rest-beta
       operationId: user.profile_GetEmail
       parameters:
         - name: user-id
@@ -2153,7 +2200,11 @@ paths:
     patch:
       tags:
         - users.profile
-      summary: Update the navigation property emails in users
+      summary: Update itememail
+      description: Update the properties of an itemEmail object in a user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/itememail-update?view=graph-rest-beta
       operationId: user.profile_UpdateEmail
       parameters:
         - name: user-id
@@ -3113,7 +3164,11 @@ paths:
     patch:
       tags:
         - users.profile
-      summary: Update the navigation property notes in users
+      summary: Update personAnnotation
+      description: Update the properties of a personAnnotation object in a user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/personannotation-update?view=graph-rest-beta
       operationId: user.profile_UpdateNote
       parameters:
         - name: user-id
@@ -3152,7 +3207,11 @@ paths:
     delete:
       tags:
         - users.profile
-      summary: Delete navigation property notes for users
+      summary: Delete personAnnotation
+      description: Deletes a personAnnotation object from a user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/personannotation-delete?view=graph-rest-beta
       operationId: user.profile_DeleteNote
       parameters:
         - name: user-id
@@ -3353,7 +3412,11 @@ paths:
     patch:
       tags:
         - users.profile
-      summary: Update the navigation property patents in users
+      summary: Update itemPatent
+      description: Update the properties of an itemPatent object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/itempatent-update?view=graph-rest-beta
       operationId: user.profile_UpdatePatent
       parameters:
         - name: user-id
@@ -3392,7 +3455,11 @@ paths:
     delete:
       tags:
         - users.profile
-      summary: Delete navigation property patents for users
+      summary: Delete itemPatent
+      description: Deletes an itemPatent object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/itempatent-delete?view=graph-rest-beta
       operationId: user.profile_DeletePatent
       parameters:
         - name: user-id
@@ -3593,7 +3660,11 @@ paths:
     patch:
       tags:
         - users.profile
-      summary: Update the navigation property phones in users
+      summary: Update itemphonenumber
+      description: Update the properties of an itemPhone object in a user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/itemphone-update?view=graph-rest-beta
       operationId: user.profile_UpdatePhone
       parameters:
         - name: user-id
@@ -3632,7 +3703,11 @@ paths:
     delete:
       tags:
         - users.profile
-      summary: Delete navigation property phones for users
+      summary: Delete itemPhoneNumber
+      description: Delete an itemPhone object from the user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/itemphone-delete?view=graph-rest-beta
       operationId: user.profile_DeletePhone
       parameters:
         - name: user-id
@@ -4313,7 +4388,11 @@ paths:
     patch:
       tags:
         - users.profile
-      summary: Update the navigation property publications in users
+      summary: Update itemPublication
+      description: Update the properties of an itemPublication object in a user's profile.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/itempublication-update?view=graph-rest-beta
       operationId: user.profile_UpdatePublication
       parameters:
         - name: user-id
@@ -6086,6 +6165,11 @@ components:
               format: date-time
             source:
               $ref: '#/components/schemas/microsoft.graph.personDataSources'
+            sources:
+              type: array
+              items:
+                $ref: '#/components/schemas/microsoft.graph.profileSourceAnnotation'
+              description: Where the values within an entity originated if synced from another source.
           additionalProperties:
             type: object
     microsoft.graph.localeInfo:
@@ -6209,7 +6293,7 @@ components:
           nullable: true
         displayName:
           type: string
-          description: Long-form name of the program that the user has provided.
+          description: Long-form name of the program that the user provided.
         fieldsOfStudy:
           type: array
           items:
@@ -6218,11 +6302,11 @@ components:
           description: Majors and minors associated with the program. (if applicable)
         grade:
           type: string
-          description: 'The final grade, class, GPA or score.'
+          description: 'The final grade, class, GPA, or score.'
           nullable: true
         notes:
           type: string
-          description: Additional notes the user has provided.
+          description: More notes the user provided.
           nullable: true
         webUrl:
           type: string
@@ -6325,22 +6409,22 @@ components:
           $ref: '#/components/schemas/microsoft.graph.companyDetail'
         description:
           type: string
-          description: Description of the position in question.
+          description: A description for the position in question.
           nullable: true
         endMonthYear:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$'
           type: string
-          description: When the position ended.
+          description: The date when the position ended.
           format: date
           nullable: true
         jobTitle:
           type: string
-          description: The title held when in that position.
+          description: The title of the position.
           nullable: true
         layer:
           maximum: 2147483647
           minimum: -2147483648
-          type: integer
+          type: number
           description: The place where the employee is within the organizational hierarchy.
           format: int32
           nullable: true
@@ -6352,15 +6436,23 @@ components:
           type: string
           description: The role the position entailed.
           nullable: true
+        secondaryJobTitle:
+          type: string
+          description: An optional job title for the position.
+          nullable: true
+        secondaryRole:
+          type: string
+          description: An optional role for the position entailed.
+          nullable: true
         startMonthYear:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$'
           type: string
-          description: The start month and year of the position.
+          description: The start date of the position.
           format: date
           nullable: true
         summary:
           type: string
-          description: summary of the position.
+          description: The summary of the position.
           nullable: true
       additionalProperties:
         type: object
@@ -6370,6 +6462,10 @@ components:
       properties:
         address:
           $ref: '#/components/schemas/microsoft.graph.physicalAddress'
+        companyCode:
+          type: string
+          description: 'Legal entity number of the company or its subdivision. For information on how to set the value for the companyCode, see profileSourceAnnotation.'
+          nullable: true
         department:
           type: string
           description: Department Name within a company.
@@ -6384,6 +6480,10 @@ components:
         pronunciation:
           type: string
           description: Pronunciation guide for the company name.
+          nullable: true
+        secondaryDepartment:
+          type: string
+          description: Secondary Department Name within a company.
           nullable: true
         webUrl:
           type: string
@@ -6703,6 +6803,8 @@ components:
         - '-INF'
         - INF
         - NaN
+      type: string
+      nullable: true
     microsoft.graph.outlookGeoCoordinates:
       title: outlookGeoCoordinates
       type: object
@@ -6818,6 +6920,24 @@ components:
             nullable: true
       additionalProperties:
         type: object
+    microsoft.graph.profileSourceAnnotation:
+      title: profileSourceAnnotation
+      type: object
+      properties:
+        isDefaultSource:
+          type: boolean
+          description: Indicates whether the source is the default one.
+          nullable: true
+        properties:
+          type: array
+          items:
+            type: string
+            nullable: true
+          description: Names of properties that have data from this source.
+        sourceId:
+          type: string
+      additionalProperties:
+        type: object
     microsoft.graph.physicalAddressType:
       title: physicalAddressType
       enum:
@@ -6880,11 +7000,11 @@ components:
       properties:
         displayName:
           type: string
-          description: The display name of the identity. This property is read-only.
+          description: 'The display name of the identity. For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don''t show up as changed when using delta.'
           nullable: true
         id:
           type: string
-          description: The identifier of the identity. This property is read-only.
+          description: 'Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that''s subject to review.'
           nullable: true
       additionalProperties:
         type: object

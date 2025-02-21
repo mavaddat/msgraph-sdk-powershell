@@ -120,8 +120,11 @@ paths:
     get:
       tags:
         - groups.plannerGroup
-      summary: Get plans from groups
-      description: Read-only. Nullable. Returns the plannerPlans owned by the group.
+      summary: List plans
+      description: Retrieve a list of plannerPlan objects owned by a group object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannergroup-list-plans?view=graph-rest-beta
       operationId: group.planner_ListPlan
       parameters:
         - name: group-id
@@ -1656,6 +1659,103 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/microsoft.graph.delta()':
+    get:
+      tags:
+        - groups.plannerGroup
+      summary: Invoke function delta
+      description: 'Get newly created, updated, or deleted tasks in either a Planner plan or assigned to the signed-in user without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannertask-delta?view=graph-rest-beta
+      operationId: group.planner.plan.bucket.task_delta
+      parameters:
+        - name: group-id
+          in: path
+          description: The unique identifier of group
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: group
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+        - name: plannerBucket-id
+          in: path
+          description: The unique identifier of plannerBucket
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerBucket
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of plannerTask
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/microsoft.graph.plannerTask'
+                  '@odata.nextLink':
+                    type: string
+                    nullable: true
+                  '@odata.deltaLink':
+                    type: string
+                    nullable: true
+                additionalProperties:
+                  type: object
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
   '/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/$count':
     get:
       tags:
@@ -1686,6 +1786,95 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/groups/{group-id}/planner/plans/{plannerPlan-id}/buckets/microsoft.graph.delta()':
+    get:
+      tags:
+        - groups.plannerGroup
+      summary: Invoke function delta
+      description: 'Get newly created, updated, or deleted buckets in a Planner plan without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerbucket-delta?view=graph-rest-beta
+      operationId: group.planner.plan.bucket_delta
+      parameters:
+        - name: group-id
+          in: path
+          description: The unique identifier of group
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: group
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of plannerBucket
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/microsoft.graph.plannerBucket'
+                  '@odata.nextLink':
+                    type: string
+                    nullable: true
+                  '@odata.deltaLink':
+                    type: string
+                    nullable: true
+                additionalProperties:
+                  type: object
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
   '/groups/{group-id}/planner/plans/{plannerPlan-id}/details':
     get:
       tags:
@@ -1820,6 +2009,147 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  '/groups/{group-id}/planner/plans/{plannerPlan-id}/microsoft.graph.archive':
+    post:
+      tags:
+        - groups.plannerGroup
+      summary: Invoke action archive
+      description: 'Archive a plannerPlan object. Archiving a plan, also archives the plannerTasks and plannerBuckets in the plan.  An archived entity is read-only. Archived entities cannot be updated. An archived plan can be unarchived.  All archived entities can be deleted. Archived tasks are not included in the response for list of tasks assigned to a user. '
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-archive?view=graph-rest-beta
+      operationId: group.planner.plan_archive
+      parameters:
+        - name: group-id
+          in: path
+          description: The unique identifier of group
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: group
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                justification:
+                  type: string
+                  nullable: true
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        2XX:
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/groups/{group-id}/planner/plans/{plannerPlan-id}/microsoft.graph.moveToContainer':
+    post:
+      tags:
+        - groups.plannerGroup
+      summary: Invoke action moveToContainer
+      description: Move a planner plan object from one planner plan container to another. Planner plans can only be moved from a user container to a group container.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-movetocontainer?view=graph-rest-beta
+      operationId: group.planner.plan_moveToContainer
+      parameters:
+        - name: group-id
+          in: path
+          description: The unique identifier of group
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: group
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                container:
+                  $ref: '#/components/schemas/microsoft.graph.plannerPlanContainer'
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.plannerPlan'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/groups/{group-id}/planner/plans/{plannerPlan-id}/microsoft.graph.unarchive':
+    post:
+      tags:
+        - groups.plannerGroup
+      summary: Invoke action unarchive
+      description: 'Unarchive a plannerPlan object. Unarchiving a plan, also unarchives the plannerTasks and plannerBuckets in the plan.  Only a plan that is archived can be unarchived.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-unarchive?view=graph-rest-beta
+      operationId: group.planner.plan_unarchive
+      parameters:
+        - name: group-id
+          in: path
+          description: The unique identifier of group
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: group
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                justification:
+                  type: string
+                  nullable: true
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        2XX:
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   '/groups/{group-id}/planner/plans/{plannerPlan-id}/tasks':
     get:
       tags:
@@ -2740,6 +3070,95 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/groups/{group-id}/planner/plans/{plannerPlan-id}/tasks/microsoft.graph.delta()':
+    get:
+      tags:
+        - groups.plannerGroup
+      summary: Invoke function delta
+      description: 'Get newly created, updated, or deleted tasks in either a Planner plan or assigned to the signed-in user without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannertask-delta?view=graph-rest-beta
+      operationId: group.planner.plan.task_delta
+      parameters:
+        - name: group-id
+          in: path
+          description: The unique identifier of group
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: group
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of plannerTask
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/microsoft.graph.plannerTask'
+                  '@odata.nextLink':
+                    type: string
+                    nullable: true
+                  '@odata.deltaLink':
+                    type: string
+                    nullable: true
+                additionalProperties:
+                  type: object
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
   '/groups/{group-id}/planner/plans/$count':
     get:
       tags:
@@ -2762,6 +3181,87 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/groups/{group-id}/planner/plans/microsoft.graph.delta()':
+    get:
+      tags:
+        - groups.plannerGroup
+      summary: Invoke function delta
+      description: 'Get newly created, updated, or deleted Planner plans in either a group or a Planner roster without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-delta?view=graph-rest-beta
+      operationId: group.planner.plan_delta
+      parameters:
+        - name: group-id
+          in: path
+          description: The unique identifier of group
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: group
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of plannerPlan
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/microsoft.graph.plannerPlan'
+                  '@odata.nextLink':
+                    type: string
+                    nullable: true
+                  '@odata.deltaLink':
+                    type: string
+                    nullable: true
+                additionalProperties:
+                  type: object
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
   /planner:
     get:
       tags:
@@ -2825,8 +3325,11 @@ paths:
     get:
       tags:
         - planner.plannerBucket
-      summary: Get buckets from planner
-      description: Read-only. Nullable. Returns a collection of the specified buckets
+      summary: List buckets
+      description: Retrieve a list of plannerbucket objects.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/planner-list-buckets?view=graph-rest-beta
       operationId: planner_ListBucket
       parameters:
         - $ref: '#/components/parameters/top'
@@ -2876,7 +3379,11 @@ paths:
     post:
       tags:
         - planner.plannerBucket
-      summary: Create new navigation property to buckets for planner
+      summary: Create plannerBucket
+      description: Create a new plannerBucket object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/planner-post-buckets?view=graph-rest-beta
       operationId: planner_CreateBucket
       requestBody:
         description: New navigation property
@@ -2899,8 +3406,11 @@ paths:
     get:
       tags:
         - planner.plannerBucket
-      summary: Get buckets from planner
-      description: Read-only. Nullable. Returns a collection of the specified buckets
+      summary: Get plannerBucket
+      description: Retrieve the properties and relationships of a plannerBucket object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerbucket-get?view=graph-rest-beta
       operationId: planner_GetBucket
       parameters:
         - name: plannerBucket-id
@@ -2944,7 +3454,11 @@ paths:
     patch:
       tags:
         - planner.plannerBucket
-      summary: Update the navigation property buckets in planner
+      summary: Update plannerbucket
+      description: Update the properties of plannerbucket object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerbucket-update?view=graph-rest-beta
       operationId: planner_UpdateBucket
       parameters:
         - name: plannerBucket-id
@@ -2982,7 +3496,11 @@ paths:
     delete:
       tags:
         - planner.plannerBucket
-      summary: Delete navigation property buckets for planner
+      summary: Delete plannerBucket
+      description: Delete plannerBucket.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerbucket-delete?view=graph-rest-beta
       operationId: planner_DeleteBucket
       parameters:
         - name: plannerBucket-id
@@ -3009,8 +3527,11 @@ paths:
     get:
       tags:
         - planner.plannerBucket
-      summary: Get tasks from planner
-      description: Read-only. Nullable. The collection of tasks in the bucket.
+      summary: List tasks
+      description: Retrieve a list of plannerTask objects associated to a plannerBucket object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerbucket-list-tasks?view=graph-rest-beta
       operationId: planner.bucket_ListTask
       parameters:
         - name: plannerBucket-id
@@ -3784,7 +4305,7 @@ paths:
   '/planner/buckets/{plannerBucket-id}/tasks/microsoft.graph.delta()':
     get:
       tags:
-        - planner.Functions
+        - planner.plannerBucket
       summary: Invoke function delta
       description: 'Get newly created, updated, or deleted tasks in either a Planner plan or assigned to the signed-in user without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
       externalDocs:
@@ -3879,7 +4400,7 @@ paths:
   /planner/buckets/microsoft.graph.delta():
     get:
       tags:
-        - planner.Functions
+        - planner.plannerBucket
       summary: Invoke function delta
       description: 'Get newly created, updated, or deleted buckets in a Planner plan without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
       externalDocs:
@@ -3953,8 +4474,11 @@ paths:
     get:
       tags:
         - planner.plannerPlan
-      summary: Get plans from planner
-      description: Read-only. Nullable. Returns a collection of the specified plans
+      summary: List plans
+      description: Get a list of plannerPlan objects.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/planner-list-plans?view=graph-rest-beta
       operationId: planner_ListPlan
       parameters:
         - $ref: '#/components/parameters/top'
@@ -4004,7 +4528,11 @@ paths:
     post:
       tags:
         - planner.plannerPlan
-      summary: Create new navigation property to plans for planner
+      summary: Create plannerPlan
+      description: Create a new plannerPlan object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/planner-post-plans?view=graph-rest-beta
       operationId: planner_CreatePlan
       requestBody:
         description: New navigation property
@@ -4027,8 +4555,11 @@ paths:
     get:
       tags:
         - planner.plannerPlan
-      summary: Get plans from planner
-      description: Read-only. Nullable. Returns a collection of the specified plans
+      summary: Get plannerPlan
+      description: Retrieve the properties and relationships of a plannerplan object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-get?view=graph-rest-beta
       operationId: planner_GetPlan
       parameters:
         - name: plannerPlan-id
@@ -4072,7 +4603,11 @@ paths:
     patch:
       tags:
         - planner.plannerPlan
-      summary: Update the navigation property plans in planner
+      summary: Update plannerPlan
+      description: Update the properties of a plannerPlan object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-update?view=graph-rest-beta
       operationId: planner_UpdatePlan
       parameters:
         - name: plannerPlan-id
@@ -4103,7 +4638,11 @@ paths:
     delete:
       tags:
         - planner.plannerPlan
-      summary: Delete navigation property plans for planner
+      summary: Delete plannerPlan
+      description: Delete a plannerPlan object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-delete?view=graph-rest-beta
       operationId: planner_DeletePlan
       parameters:
         - name: plannerPlan-id
@@ -4130,8 +4669,11 @@ paths:
     get:
       tags:
         - planner.plannerPlan
-      summary: Get buckets from planner
-      description: Collection of buckets in the plan. Read-only. Nullable.
+      summary: List buckets
+      description: Retrieve a list of plannerBucket objects contained by a plannerPlan object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-list-buckets?view=graph-rest-beta
       operationId: planner.plan_ListBucket
       parameters:
         - name: plannerPlan-id
@@ -5267,7 +5809,7 @@ paths:
   '/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/microsoft.graph.delta()':
     get:
       tags:
-        - planner.Functions
+        - planner.plannerPlan
       summary: Invoke function delta
       description: 'Get newly created, updated, or deleted tasks in either a Planner plan or assigned to the signed-in user without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
       externalDocs:
@@ -5378,7 +5920,7 @@ paths:
   '/planner/plans/{plannerPlan-id}/buckets/microsoft.graph.delta()':
     get:
       tags:
-        - planner.Functions
+        - planner.plannerPlan
       summary: Invoke function delta
       description: 'Get newly created, updated, or deleted buckets in a Planner plan without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
       externalDocs:
@@ -5460,8 +6002,11 @@ paths:
     get:
       tags:
         - planner.plannerPlan
-      summary: Get details from planner
-      description: Extra details about the plan. Read-only. Nullable.
+      summary: Get plannerPlanDetails
+      description: Retrieve the properties and relationships of a plannerPlanDetails object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplandetails-get?view=graph-rest-beta
       operationId: planner.plan_GetDetail
       parameters:
         - name: plannerPlan-id
@@ -5505,7 +6050,11 @@ paths:
     patch:
       tags:
         - planner.plannerPlan
-      summary: Update the navigation property details in planner
+      summary: Update plannerplandetails
+      description: Update the properties of plannerplandetails object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplandetails-update?view=graph-rest-beta
       operationId: planner.plan_UpdateDetail
       parameters:
         - name: plannerPlan-id
@@ -5569,8 +6118,12 @@ paths:
   '/planner/plans/{plannerPlan-id}/microsoft.graph.archive':
     post:
       tags:
-        - planner.Actions
+        - planner.plannerPlan
       summary: Invoke action archive
+      description: 'Archive a plannerPlan object. Archiving a plan, also archives the plannerTasks and plannerBuckets in the plan.  An archived entity is read-only. Archived entities cannot be updated. An archived plan can be unarchived.  All archived entities can be deleted. Archived tasks are not included in the response for list of tasks assigned to a user. '
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-archive?view=graph-rest-beta
       operationId: planner.plan_archive
       parameters:
         - name: plannerPlan-id
@@ -5603,7 +6156,7 @@ paths:
   '/planner/plans/{plannerPlan-id}/microsoft.graph.moveToContainer':
     post:
       tags:
-        - planner.Actions
+        - planner.plannerPlan
       summary: Invoke action moveToContainer
       description: Move a planner plan object from one planner plan container to another. Planner plans can only be moved from a user container to a group container.
       externalDocs:
@@ -5644,8 +6197,12 @@ paths:
   '/planner/plans/{plannerPlan-id}/microsoft.graph.unarchive':
     post:
       tags:
-        - planner.Actions
+        - planner.plannerPlan
       summary: Invoke action unarchive
+      description: 'Unarchive a plannerPlan object. Unarchiving a plan, also unarchives the plannerTasks and plannerBuckets in the plan.  Only a plan that is archived can be unarchived.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-unarchive?view=graph-rest-beta
       operationId: planner.plan_unarchive
       parameters:
         - name: plannerPlan-id
@@ -5679,8 +6236,11 @@ paths:
     get:
       tags:
         - planner.plannerPlan
-      summary: Get tasks from planner
-      description: Collection of tasks in the plan. Read-only. Nullable.
+      summary: List tasks
+      description: Retrieve a list of plannerTask objects associated with a plannerPlan object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-list-tasks?view=graph-rest-beta
       operationId: planner.plan_ListTask
       parameters:
         - name: plannerPlan-id
@@ -6454,7 +7014,7 @@ paths:
   '/planner/plans/{plannerPlan-id}/tasks/microsoft.graph.delta()':
     get:
       tags:
-        - planner.Functions
+        - planner.plannerPlan
       summary: Invoke function delta
       description: 'Get newly created, updated, or deleted tasks in either a Planner plan or assigned to the signed-in user without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
       externalDocs:
@@ -6549,7 +7109,7 @@ paths:
   /planner/plans/microsoft.graph.delta():
     get:
       tags:
-        - planner.Functions
+        - planner.plannerPlan
       summary: Invoke function delta
       description: 'Get newly created, updated, or deleted Planner plans in either a group or a Planner roster without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
       externalDocs:
@@ -6623,8 +7183,8 @@ paths:
     get:
       tags:
         - planner.plannerRoster
-      summary: Get rosters from planner
-      description: Read-only. Nullable. Returns a collection of the specified rosters
+      summary: Get plannerRoster
+      description: Read the properties and relationships of a plannerRoster object.
       operationId: planner_ListRoster
       parameters:
         - $ref: '#/components/parameters/top'
@@ -6674,7 +7234,11 @@ paths:
     post:
       tags:
         - planner.plannerRoster
-      summary: Create new navigation property to rosters for planner
+      summary: Create plannerRoster
+      description: Create a new plannerRoster object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/planner-post-rosters?view=graph-rest-beta
       operationId: planner_CreateRoster
       requestBody:
         description: New navigation property
@@ -6697,8 +7261,11 @@ paths:
     get:
       tags:
         - planner.plannerRoster
-      summary: Get rosters from planner
-      description: Read-only. Nullable. Returns a collection of the specified rosters
+      summary: Get plannerRoster
+      description: Read the properties and relationships of a plannerRoster object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerroster-get?view=graph-rest-beta
       operationId: planner_GetRoster
       parameters:
         - name: plannerRoster-id
@@ -6773,7 +7340,11 @@ paths:
     delete:
       tags:
         - planner.plannerRoster
-      summary: Delete navigation property rosters for planner
+      summary: Delete plannerRoster
+      description: Delete a plannerRoster object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerroster-delete?view=graph-rest-beta
       operationId: planner_DeleteRoster
       parameters:
         - name: plannerRoster-id
@@ -6800,8 +7371,11 @@ paths:
     get:
       tags:
         - planner.plannerRoster
-      summary: Get members from planner
-      description: Retrieves the members of the plannerRoster.
+      summary: List plannerRosterMembers
+      description: Get the list of plannerRosterMembers from a plannerRoster.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerroster-list-members?view=graph-rest-beta
       operationId: planner.roster_ListMember
       parameters:
         - name: plannerRoster-id
@@ -6859,7 +7433,11 @@ paths:
     post:
       tags:
         - planner.plannerRoster
-      summary: Create new navigation property to members for planner
+      summary: Create plannerRosterMember
+      description: Add a member to the plannerRoster object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerroster-post-members?view=graph-rest-beta
       operationId: planner.roster_CreateMember
       parameters:
         - name: plannerRoster-id
@@ -6891,8 +7469,11 @@ paths:
     get:
       tags:
         - planner.plannerRoster
-      summary: Get members from planner
-      description: Retrieves the members of the plannerRoster.
+      summary: Get plannerRosterMember
+      description: Read the properties and relationships of a plannerRosterMember object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerrostermember-get?view=graph-rest-beta
       operationId: planner.roster_GetMember
       parameters:
         - name: plannerRoster-id
@@ -6983,7 +7564,11 @@ paths:
     delete:
       tags:
         - planner.plannerRoster
-      summary: Delete navigation property members for planner
+      summary: Delete plannerRosterMember
+      description: Delete a plannerRosterMember object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerrostermember-delete?view=graph-rest-beta
       operationId: planner.roster_DeleteMember
       parameters:
         - name: plannerRoster-id
@@ -7036,12 +7621,59 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/planner/rosters/{plannerRoster-id}/microsoft.graph.assignSensitivityLabel':
+    post:
+      tags:
+        - planner.plannerRoster
+      summary: Invoke action assignSensitivityLabel
+      description: Assign a sensitivity label to a plannerRoster object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerroster-assignsensitivitylabel?view=graph-rest-beta
+      operationId: planner.roster_assignSensitivityLabel
+      parameters:
+        - name: plannerRoster-id
+          in: path
+          description: The unique identifier of plannerRoster
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerRoster
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sensitivityLabelId:
+                  type: string
+                  nullable: true
+                assignmentMethod:
+                  $ref: '#/components/schemas/microsoft.graph.sensitivityLabelAssignmentMethod'
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.plannerRoster'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   '/planner/rosters/{plannerRoster-id}/plans':
     get:
       tags:
         - planner.plannerRoster
-      summary: Get plans from planner
-      description: Retrieves the plans contained by the plannerRoster.
+      summary: List plans
+      description: Get the plannerPlans contained by the plannerRoster.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerroster-list-plans?view=graph-rest-beta
       operationId: planner.roster_ListPlan
       parameters:
         - name: plannerRoster-id
@@ -7190,8 +7822,11 @@ paths:
     get:
       tags:
         - planner.plannerTask
-      summary: Get tasks from planner
-      description: Read-only. Nullable. Returns a collection of the specified tasks
+      summary: List tasks
+      description: Retrieve a list of plannertask objects.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/planner-list-tasks?view=graph-rest-beta
       operationId: planner_ListTask
       parameters:
         - $ref: '#/components/parameters/top'
@@ -7241,7 +7876,11 @@ paths:
     post:
       tags:
         - planner.plannerTask
-      summary: Create new navigation property to tasks for planner
+      summary: Create plannerTask
+      description: Create a new plannerTask.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/planner-post-tasks?view=graph-rest-beta
       operationId: planner_CreateTask
       requestBody:
         description: New navigation property
@@ -7264,8 +7903,11 @@ paths:
     get:
       tags:
         - planner.plannerTask
-      summary: Get tasks from planner
-      description: Read-only. Nullable. Returns a collection of the specified tasks
+      summary: Get plannerTask
+      description: Retrieve the properties and relationships of plannerTask object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannertask-get?view=graph-rest-beta
       operationId: planner_GetTask
       parameters:
         - name: plannerTask-id
@@ -7309,7 +7951,11 @@ paths:
     patch:
       tags:
         - planner.plannerTask
-      summary: Update the navigation property tasks in planner
+      summary: Update plannertask
+      description: Update the properties of plannertask object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannertask-update?view=graph-rest-beta
       operationId: planner_UpdateTask
       parameters:
         - name: plannerTask-id
@@ -7347,7 +7993,11 @@ paths:
     delete:
       tags:
         - planner.plannerTask
-      summary: Delete navigation property tasks for planner
+      summary: Delete plannerTask
+      description: Delete a plannerTask object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannertask-delete?view=graph-rest-beta
       operationId: planner_DeleteTask
       parameters:
         - name: plannerTask-id
@@ -7374,8 +8024,11 @@ paths:
     get:
       tags:
         - planner.plannerTask
-      summary: Get assignedToTaskBoardFormat from planner
-      description: Read-only. Nullable. Used to render the task correctly in the task board view when grouped by assignedTo.
+      summary: Get plannerAssignedToTaskBoardTaskFormat
+      description: Retrieve the properties and relationships of plannerAssignedToTaskBoardTaskFormat object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerassignedtotaskboardtaskformat-get?view=graph-rest-beta
       operationId: planner.task_GetAssignedToTaskBoardFormat
       parameters:
         - name: plannerTask-id
@@ -7419,7 +8072,11 @@ paths:
     patch:
       tags:
         - planner.plannerTask
-      summary: Update the navigation property assignedToTaskBoardFormat in planner
+      summary: Update plannerAssignedToTaskBoardTaskFormat
+      description: Update the properties of plannerAssignedToTaskBoardTaskFormat object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerassignedtotaskboardtaskformat-update?view=graph-rest-beta
       operationId: planner.task_UpdateAssignedToTaskBoardFormat
       parameters:
         - name: plannerTask-id
@@ -7484,8 +8141,11 @@ paths:
     get:
       tags:
         - planner.plannerTask
-      summary: Get bucketTaskBoardFormat from planner
-      description: Read-only. Nullable. Used to render the task correctly in the task board view when grouped by bucket.
+      summary: Get plannerBucketTaskBoardTaskFormat
+      description: Retrieve the properties and relationships of plannerBucketTaskBoardTaskFormat object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerbuckettaskboardtaskformat-get?view=graph-rest-beta
       operationId: planner.task_GetBucketTaskBoardFormat
       parameters:
         - name: plannerTask-id
@@ -7529,7 +8189,11 @@ paths:
     patch:
       tags:
         - planner.plannerTask
-      summary: Update the navigation property bucketTaskBoardFormat in planner
+      summary: Update plannerBucketTaskBoardTaskFormat
+      description: Update the properties of a plannerBucketTaskBoardTaskFormat object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerbuckettaskboardtaskformat-update?view=graph-rest-beta
       operationId: planner.task_UpdateBucketTaskBoardFormat
       parameters:
         - name: plannerTask-id
@@ -7594,8 +8258,11 @@ paths:
     get:
       tags:
         - planner.plannerTask
-      summary: Get details from planner
-      description: Read-only. Nullable. More details about the task.
+      summary: Get plannerTaskDetails
+      description: Retrieve the properties and relationships of a plannerTaskDetails object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannertaskdetails-get?view=graph-rest-beta
       operationId: planner.task_GetDetail
       parameters:
         - name: plannerTask-id
@@ -7639,7 +8306,11 @@ paths:
     patch:
       tags:
         - planner.plannerTask
-      summary: Update the navigation property details in planner
+      summary: Update plannertaskdetails
+      description: Update the properties of plannerTaskDetails object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannertaskdetails-update?view=graph-rest-beta
       operationId: planner.task_UpdateDetail
       parameters:
         - name: plannerTask-id
@@ -7704,8 +8375,11 @@ paths:
     get:
       tags:
         - planner.plannerTask
-      summary: Get progressTaskBoardFormat from planner
-      description: Read-only. Nullable. Used to render the task correctly in the task board view when grouped by progress.
+      summary: Get plannerProgressTaskBoardTaskFormat
+      description: Retrieve the properties and relationships of plannerProgressTaskBoardTaskFormat object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerprogresstaskboardtaskformat-get?view=graph-rest-beta
       operationId: planner.task_GetProgressTaskBoardFormat
       parameters:
         - name: plannerTask-id
@@ -7749,7 +8423,11 @@ paths:
     patch:
       tags:
         - planner.plannerTask
-      summary: Update the navigation property progressTaskBoardFormat in planner
+      summary: Update plannerProgressTaskBoardTaskFormat
+      description: Update the properties of plannerProgressTaskBoardTaskFormat object.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerprogresstaskboardtaskformat-update?view=graph-rest-beta
       operationId: planner.task_UpdateProgressTaskBoardFormat
       parameters:
         - name: plannerTask-id
@@ -7827,7 +8505,7 @@ paths:
   /planner/tasks/microsoft.graph.delta():
     get:
       tags:
-        - planner.Functions
+        - planner.plannerTask
       summary: Invoke function delta
       description: 'Get newly created, updated, or deleted tasks in either a Planner plan or assigned to the signed-in user without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
       externalDocs:
@@ -8245,6 +8923,87 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/users/{user-id}/planner/all/microsoft.graph.delta()':
+    get:
+      tags:
+        - users.plannerUser
+      summary: Invoke function delta
+      description: 'Retrieves changes to objects that the user is subscribed to. This method allows your application to track changes to objects that the user can access from within Planner over time. The return value of this method might contain heterogeneous types of objects from Planner. For more information about tracking changes in Microsoft Graph data, see Use delta query to track changes in Microsoft Graph data.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/planneruser-list-delta?view=graph-rest-beta
+      operationId: user.planner.all_delta
+      parameters:
+        - name: user-id
+          in: path
+          description: The unique identifier of user
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: user
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of plannerDelta
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/microsoft.graph.plannerDelta'
+                  '@odata.nextLink':
+                    type: string
+                    nullable: true
+                  '@odata.deltaLink':
+                    type: string
+                    nullable: true
+                additionalProperties:
+                  type: object
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
   '/users/{user-id}/planner/favoritePlans':
     get:
       tags:
@@ -10055,6 +10814,103 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/{plannerBucket-id}/tasks/microsoft.graph.delta()':
+    get:
+      tags:
+        - users.plannerUser
+      summary: Invoke function delta
+      description: 'Get newly created, updated, or deleted tasks in either a Planner plan or assigned to the signed-in user without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannertask-delta?view=graph-rest-beta
+      operationId: user.planner.plan.bucket.task_delta
+      parameters:
+        - name: user-id
+          in: path
+          description: The unique identifier of user
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: user
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+        - name: plannerBucket-id
+          in: path
+          description: The unique identifier of plannerBucket
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerBucket
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of plannerTask
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/microsoft.graph.plannerTask'
+                  '@odata.nextLink':
+                    type: string
+                    nullable: true
+                  '@odata.deltaLink':
+                    type: string
+                    nullable: true
+                additionalProperties:
+                  type: object
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
   '/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/$count':
     get:
       tags:
@@ -10085,6 +10941,95 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/users/{user-id}/planner/plans/{plannerPlan-id}/buckets/microsoft.graph.delta()':
+    get:
+      tags:
+        - users.plannerUser
+      summary: Invoke function delta
+      description: 'Get newly created, updated, or deleted buckets in a Planner plan without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerbucket-delta?view=graph-rest-beta
+      operationId: user.planner.plan.bucket_delta
+      parameters:
+        - name: user-id
+          in: path
+          description: The unique identifier of user
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: user
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of plannerBucket
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/microsoft.graph.plannerBucket'
+                  '@odata.nextLink':
+                    type: string
+                    nullable: true
+                  '@odata.deltaLink':
+                    type: string
+                    nullable: true
+                additionalProperties:
+                  type: object
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
   '/users/{user-id}/planner/plans/{plannerPlan-id}/details':
     get:
       tags:
@@ -10219,6 +11164,147 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  '/users/{user-id}/planner/plans/{plannerPlan-id}/microsoft.graph.archive':
+    post:
+      tags:
+        - users.plannerUser
+      summary: Invoke action archive
+      description: 'Archive a plannerPlan object. Archiving a plan, also archives the plannerTasks and plannerBuckets in the plan.  An archived entity is read-only. Archived entities cannot be updated. An archived plan can be unarchived.  All archived entities can be deleted. Archived tasks are not included in the response for list of tasks assigned to a user. '
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-archive?view=graph-rest-beta
+      operationId: user.planner.plan_archive
+      parameters:
+        - name: user-id
+          in: path
+          description: The unique identifier of user
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: user
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                justification:
+                  type: string
+                  nullable: true
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        2XX:
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/users/{user-id}/planner/plans/{plannerPlan-id}/microsoft.graph.moveToContainer':
+    post:
+      tags:
+        - users.plannerUser
+      summary: Invoke action moveToContainer
+      description: Move a planner plan object from one planner plan container to another. Planner plans can only be moved from a user container to a group container.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-movetocontainer?view=graph-rest-beta
+      operationId: user.planner.plan_moveToContainer
+      parameters:
+        - name: user-id
+          in: path
+          description: The unique identifier of user
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: user
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                container:
+                  $ref: '#/components/schemas/microsoft.graph.plannerPlanContainer'
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.plannerPlan'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/users/{user-id}/planner/plans/{plannerPlan-id}/microsoft.graph.unarchive':
+    post:
+      tags:
+        - users.plannerUser
+      summary: Invoke action unarchive
+      description: 'Unarchive a plannerPlan object. Unarchiving a plan, also unarchives the plannerTasks and plannerBuckets in the plan.  Only a plan that is archived can be unarchived.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-unarchive?view=graph-rest-beta
+      operationId: user.planner.plan_unarchive
+      parameters:
+        - name: user-id
+          in: path
+          description: The unique identifier of user
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: user
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                justification:
+                  type: string
+                  nullable: true
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        2XX:
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   '/users/{user-id}/planner/plans/{plannerPlan-id}/tasks':
     get:
       tags:
@@ -11139,6 +12225,95 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/users/{user-id}/planner/plans/{plannerPlan-id}/tasks/microsoft.graph.delta()':
+    get:
+      tags:
+        - users.plannerUser
+      summary: Invoke function delta
+      description: 'Get newly created, updated, or deleted tasks in either a Planner plan or assigned to the signed-in user without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannertask-delta?view=graph-rest-beta
+      operationId: user.planner.plan.task_delta
+      parameters:
+        - name: user-id
+          in: path
+          description: The unique identifier of user
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: user
+        - name: plannerPlan-id
+          in: path
+          description: The unique identifier of plannerPlan
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: plannerPlan
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of plannerTask
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/microsoft.graph.plannerTask'
+                  '@odata.nextLink':
+                    type: string
+                    nullable: true
+                  '@odata.deltaLink':
+                    type: string
+                    nullable: true
+                additionalProperties:
+                  type: object
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
   '/users/{user-id}/planner/plans/$count':
     get:
       tags:
@@ -11161,6 +12336,87 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/users/{user-id}/planner/plans/microsoft.graph.delta()':
+    get:
+      tags:
+        - users.plannerUser
+      summary: Invoke function delta
+      description: 'Get newly created, updated, or deleted Planner plans in either a group or a Planner roster without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannerplan-delta?view=graph-rest-beta
+      operationId: user.planner.plan_delta
+      parameters:
+        - name: user-id
+          in: path
+          description: The unique identifier of user
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: user
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of plannerPlan
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/microsoft.graph.plannerPlan'
+                  '@odata.nextLink':
+                    type: string
+                    nullable: true
+                  '@odata.deltaLink':
+                    type: string
+                    nullable: true
+                additionalProperties:
+                  type: object
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
   '/users/{user-id}/planner/recentPlans':
     get:
       tags:
@@ -11301,8 +12557,11 @@ paths:
     get:
       tags:
         - users.plannerUser
-      summary: Get rosterPlans from users
-      description: Read-only. Nullable. Returns the plannerPlans contained by the plannerRosters the user is a member.
+      summary: List rosterPlans
+      description: Get the list of plannerPlans that are contained by the plannerRosters of which the user is a member.
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/planneruser-list-rosterplans?view=graph-rest-beta
       operationId: user.planner_ListRosterPlan
       parameters:
         - name: user-id
@@ -12209,6 +13468,87 @@ paths:
           $ref: '#/components/responses/ODataCountResponse'
         default:
           $ref: '#/components/responses/error'
+  '/users/{user-id}/planner/tasks/microsoft.graph.delta()':
+    get:
+      tags:
+        - users.plannerUser
+      summary: Invoke function delta
+      description: 'Get newly created, updated, or deleted tasks in either a Planner plan or assigned to the signed-in user without having to perform a full read of the entire resource collection. For details, see Use delta query to track changes in Microsoft Graph data.'
+      externalDocs:
+        description: Find more info here
+        url: https://learn.microsoft.com/graph/api/plannertask-delta?view=graph-rest-beta
+      operationId: user.planner.task_delta
+      parameters:
+        - name: user-id
+          in: path
+          description: The unique identifier of user
+          required: true
+          style: simple
+          schema:
+            type: string
+          x-ms-docs-key-type: user
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of plannerTask
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/microsoft.graph.plannerTask'
+                  '@odata.nextLink':
+                    type: string
+                    nullable: true
+                  '@odata.deltaLink':
+                    type: string
+                    nullable: true
+                additionalProperties:
+                  type: object
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+      x-ms-pageable:
+        nextLinkName: '@odata.nextLink'
+        operationName: listMore
 components:
   schemas:
     microsoft.graph.plannerGroup:
@@ -12249,9 +13589,11 @@ components:
               $ref: '#/components/schemas/microsoft.graph.plannerPlanCreation'
             isArchived:
               type: boolean
+              description: 'Read-only. If set to true, the plan is archived. An archived plan is read-only.'
               nullable: true
             owner:
               type: string
+              description: 'Use the container property instead. ID of the group that owns the plan. After it''s set, this property can’t be updated. This property doesn''t return a valid group ID if the container of the plan isn''t a group.'
               nullable: true
             sharedWithContainers:
               type: array
@@ -12289,6 +13631,7 @@ components:
               $ref: '#/components/schemas/microsoft.graph.plannerBucketCreation'
             isArchived:
               type: boolean
+              description: 'Read-only. If set totrue, the bucket is archived. An archived bucket is read-only.'
               nullable: true
             name:
               type: string
@@ -12318,7 +13661,7 @@ components:
             activeChecklistItemCount:
               maximum: 2147483647
               minimum: -2147483648
-              type: integer
+              type: number
               description: 'The number of checklist items with value set to false, representing incomplete items.'
               format: int32
               nullable: true
@@ -12328,7 +13671,7 @@ components:
               $ref: '#/components/schemas/microsoft.graph.plannerArchivalInfo'
             assigneePriority:
               type: string
-              description: 'A hint that is used to order items of this type in a list view. For more information, see Using order hints in Planner.'
+              description: 'A hint that is used to order items of this type in a list view. For more information, see Using order hints in planner.'
               nullable: true
             assignments:
               $ref: '#/components/schemas/microsoft.graph.plannerAssignments'
@@ -12339,7 +13682,7 @@ components:
             checklistItemCount:
               maximum: 2147483647
               minimum: -2147483648
-              type: integer
+              type: number
               description: The number of checklist items that are present on the task.
               format: int32
               nullable: true
@@ -12368,7 +13711,7 @@ components:
             dueDateTime:
               pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
               type: string
-              description: 'The date and time at which the task is due. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z'
+              description: 'The date and time at which the task is due. The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z'
               format: date-time
               nullable: true
             hasDescription:
@@ -12377,10 +13720,11 @@ components:
               nullable: true
             isArchived:
               type: boolean
+              description: 'Read-only. If set to true, the task is archived. An archived task is read-only.'
               nullable: true
             isOnMyDay:
               type: boolean
-              description: 'A Boolean value that indicates whether to show this task in the MyDay view. true to show the task. Otherwise, false.'
+              description: 'Indicates whether to show this task in the MyDay view. If true, it shows the task.'
               nullable: true
             isOnMyDayLastModifiedDate:
               pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$'
@@ -12388,14 +13732,21 @@ components:
               description: Read-only. The date on which task is added to or removed from MyDay.
               format: date
               nullable: true
+            lastModifiedBy:
+              $ref: '#/components/schemas/microsoft.graph.identitySet'
+            lastModifiedDateTime:
+              pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+              type: string
+              format: date-time
+              nullable: true
             orderHint:
               type: string
-              description: 'The hint used to order items of this type in a list view. For more information, see Using order hints in Plannern.'
+              description: 'The hint used to order items of this type in a list view. For more information, see Using order hints in plannern.'
               nullable: true
             percentComplete:
               maximum: 2147483647
               minimum: -2147483648
-              type: integer
+              type: number
               description: 'The percentage of task completion. When set to 100, the task is completed.'
               format: int32
               nullable: true
@@ -12408,8 +13759,8 @@ components:
             priority:
               maximum: 2147483647
               minimum: -2147483648
-              type: integer
-              description: 'The priority of the task. Valid values are between 0 and 10, inclusive. Larger values indicate lower priority. For example, 0 has the highest priority and 10 has the lowest priority. Currently, Planner interprets values 0 and 1 as ''urgent'', 2 and 3 and 4 as ''important'', 5, 6, and 7 as ''medium'', and 8, 9, and 10 as ''low''. Currently, Planner sets the value 1 for ''urgent'', 3 for ''important'', 5 for ''medium'', and 9 for ''low''.'
+              type: number
+              description: 'The priority of the task. Valid values are between 0 and 10, inclusive. Larger values indicate lower priority. For example, 0 has the highest priority and 10 has the lowest priority. Currently, planner interprets values 0 and 1 as ''urgent'', 2 and 3 and 4 as ''important'', 5, 6, and 7 as ''medium'', and 8, 9, and 10 as ''low''. Currently, planner sets the value 1 for ''urgent'', 3 for ''important'', 5 for ''medium'', and 9 for ''low''.'
               format: int32
               nullable: true
             recurrence:
@@ -12417,7 +13768,7 @@ components:
             referenceCount:
               maximum: 2147483647
               minimum: -2147483648
-              type: integer
+              type: number
               description: Number of external references that exist on the task.
               format: int32
               nullable: true
@@ -12520,6 +13871,22 @@ components:
               $ref: '#/components/schemas/microsoft.graph.plannerUserIds'
           additionalProperties:
             type: object
+    microsoft.graph.plannerPlanContainer:
+      title: plannerPlanContainer
+      type: object
+      properties:
+        containerId:
+          type: string
+          description: The identifier of the resource that contains the plan. Optional.
+          nullable: true
+        type:
+          $ref: '#/components/schemas/microsoft.graph.plannerContainerType'
+        url:
+          type: string
+          description: The full canonical URL of the container. Optional.
+          nullable: true
+      additionalProperties:
+        type: object
     microsoft.graph.planner:
       allOf:
         - $ref: '#/components/schemas/microsoft.graph.entity'
@@ -12552,28 +13919,14 @@ components:
               x-ms-navigationProperty: true
           additionalProperties:
             type: object
-    microsoft.graph.plannerPlanContainer:
-      title: plannerPlanContainer
-      type: object
-      properties:
-        containerId:
-          type: string
-          description: The identifier of the resource that contains the plan. Optional.
-          nullable: true
-        type:
-          $ref: '#/components/schemas/microsoft.graph.plannerContainerType'
-        url:
-          type: string
-          description: The full canonical URL of the container. Optional.
-          nullable: true
-      additionalProperties:
-        type: object
     microsoft.graph.plannerRoster:
       allOf:
         - $ref: '#/components/schemas/microsoft.graph.entity'
         - title: plannerRoster
           type: object
           properties:
+            assignedSensitivityLabel:
+              $ref: '#/components/schemas/microsoft.graph.sensitivityLabelAssignment'
             members:
               type: array
               items:
@@ -12610,6 +13963,14 @@ components:
               nullable: true
           additionalProperties:
             type: object
+    microsoft.graph.sensitivityLabelAssignmentMethod:
+      title: sensitivityLabelAssignmentMethod
+      enum:
+        - standard
+        - privileged
+        - auto
+        - unknownFutureValue
+      type: string
     microsoft.graph.plannerUser:
       allOf:
         - $ref: '#/components/schemas/microsoft.graph.plannerDelta'
@@ -12684,12 +14045,14 @@ components:
       properties:
         justification:
           type: string
+          description: Read-only. Reason why the entity was archived or unarchived.
           nullable: true
         statusChangedBy:
           $ref: '#/components/schemas/microsoft.graph.identitySet'
         statusChangedDateTime:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
           type: string
+          description: Read-only. Date and time at which the entity's archive status changed.
           format: date-time
           nullable: true
       additionalProperties:
@@ -12777,7 +14140,7 @@ components:
         occurrenceId:
           maximum: 2147483647
           minimum: -2147483648
-          type: integer
+          type: number
           description: 'The 1-based index of this task within the recurrence series. The first task in a series has the value 1, the next task in the series has the value 2, and so on.'
           format: int32
         previousInSeriesTaskId:
@@ -12988,6 +14351,20 @@ components:
         - driveItem
         - user
       type: string
+    microsoft.graph.sensitivityLabelAssignment:
+      title: sensitivityLabelAssignment
+      type: object
+      properties:
+        assignmentMethod:
+          $ref: '#/components/schemas/microsoft.graph.sensitivityLabelAssignmentMethod'
+        sensitivityLabelId:
+          type: string
+          description: The unique identifier for the sensitivity label assigned to the file.
+        tenantId:
+          type: string
+          description: The unique identifier for the tenant that hosts the file when this label is applied.
+      additionalProperties:
+        type: object
     microsoft.graph.plannerFavoritePlanReferenceCollection:
       title: plannerFavoritePlanReferenceCollection
       type: object
@@ -13094,11 +14471,11 @@ components:
       properties:
         displayName:
           type: string
-          description: The display name of the identity. This property is read-only.
+          description: 'The display name of the identity. For drive items, the display name might not always be available or up to date. For example, if a user changes their display name the API might show the new value in a future response, but the items associated with the user don''t show up as changed when using delta.'
           nullable: true
         id:
           type: string
-          description: The identifier of the identity. This property is read-only.
+          description: 'Unique identifier for the identity or actor. For example, in the access reviews decisions API, this property might record the id of the principal, that is, the group, user, or application that''s subject to review.'
           nullable: true
       additionalProperties:
         type: object
@@ -13251,7 +14628,7 @@ components:
         dayOfMonth:
           maximum: 2147483647
           minimum: -2147483648
-          type: integer
+          type: number
           description: The day of the month on which the event occurs. Required if type is absoluteMonthly or absoluteYearly.
           format: int32
         daysOfWeek:
@@ -13266,13 +14643,13 @@ components:
         interval:
           maximum: 2147483647
           minimum: -2147483648
-          type: integer
+          type: number
           description: 'The number of units between occurrences, where units can be in days, weeks, months, or years, depending on the type. Required.'
           format: int32
         month:
           maximum: 2147483647
           minimum: -2147483648
-          type: integer
+          type: number
           description: The month in which the event occurs.  This is a number from 1 to 12.
           format: int32
         type:

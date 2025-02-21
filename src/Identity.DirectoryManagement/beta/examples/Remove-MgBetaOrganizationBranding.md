@@ -1,17 +1,15 @@
-### Example 1: {{ Add title here }}
+### Example 1: Code snippet
+
 ```powershell
- PS C:\> {{ Add code here }}
 
-{{ Add output here }}
+Import-Module Microsoft.Graph.Beta.Identity.DirectoryManagement
+
+$params = @{
+	id = "0"
+}
+
+Remove-MgBetaOrganizationBranding -OrganizationId $organizationId -BodyParameter $params
+
 ```
+This example shows how to use the Remove-MgBetaOrganizationBranding Cmdlet.
 
-{{ Add description here }}
-
-### Example 2: {{ Add title here }}
-```powershell
- PS C:\> {{ Add code here }}
-
-{{ Add output here }}
-```
-
-{{ Add description here }}

@@ -38,7 +38,7 @@ $OpenApiTagPattern = '\[OpenAPI\].s*(.*)=>(.*):\"(.*)\"'
 $ExternalDocsPattern = 'https://learn.microsoft.com/graph/api/(.*?(graph-rest-1.0|graph-rest-beta))'
 $AliasPattern = '\[global::System.Management.Automation.Alias(.*?)\]'
 $ActionFunctionFQNPattern = "\/Microsoft.Graph.(.*)$"
-$PermissionsUrl = "https://graphexplorerapi.azurewebsites.net/permissions"
+$PermissionsUrl = "https://devxapi-func-prod-eastus.azurewebsites.net/permissions"
 
 Write-Debug "Crawling cmdlets in $CmdletPathPattern."
 $Stopwatch = [system.diagnostics.stopwatch]::StartNew()
@@ -78,8 +78,31 @@ $ApiVersion | ForEach-Object {
             if (-not($Null -eq $CommandAliasValue)) {
                 $CommandAliasValue = $CommandAliasValue.Replace("[global::System.Management.Automation.Alias(`"", "").Replace("`")", "").Replace("]", "")
             }
-            if(-not($CommandAliasValue -contains "-Mg")) {
+            if(-not($CommandAliasValue.Contains("-Mg"))) {
                 $CommandAliasValue = $null
+            }
+            $ExternalDocsUrl = ($RawFileContent -match $ExternalDocsPattern) ? $Matches.0 : $null
+            if(-not($Null -eq $ExternalDocsUrl)) {
+                $ExternalDocsUrl = $ExternalDocsUrl.Replace("intune-onboarding-", "")
+                $ExternalDocsUrl = $ExternalDocsUrl.Replace("intune-mam-", "")
+                
+                try {
+                    $HTTP_Request = [System.Net.WebRequest]::Create($ExternalDocsUrl)
+            
+                    # We then get a response from the site.
+                    $HTTP_Response = $HTTP_Request.GetResponse()
+            
+                    # We then get the HTTP code as an integer.
+                    $HTTP_Status = [int]$HTTP_Response.StatusCode
+            
+                    If (-not($HTTP_Status-eq 200)) {
+                        $ExternalDocsUrl = $Null
+                    }
+                    If ($HTTP_Response -ne $null) { $HTTP_Response.Close() }
+                }
+                catch {
+                    $ExternalDocsUrl = $Null
+                }
             }
             $MappingValue = @{
                 Command          = $CommandName
@@ -89,7 +112,7 @@ $ApiVersion | ForEach-Object {
                 ApiVersion       = $CurrentApiVersion
                 OutputType       = ($RawFileContent -match $OutputTypePattern) ? $Matches.1 : $null
                 Module           = $ModuleName
-                ApiReferenceLink = ($RawFileContent -match $ExternalDocsPattern) ? $Matches.0 : $null
+                ApiReferenceLink = $ExternalDocsUrl
                 CommandAlias     = $CommandAliasValue
                 Permissions      = @()
             }
@@ -115,7 +138,6 @@ $ApiVersion | ForEach-Object {
                                 IsLeastPrivilege = $_.isLeastPrivilege
                             }
                         }
-                        $Permissions = $Permissions | Sort-Object -Property Name -Unique
                         $Permissions = $Permissions | Sort-Object -Property PermissionType
                         $Permissions = $Permissions | Sort-Object -Property IsLeastPrivilege
                         [array]::Reverse($Permissions)
